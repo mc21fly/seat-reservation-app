@@ -1,4 +1,18 @@
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import {
+	setSeatsToChoose,
+	setSideBySide,
+} from '../../app/states/options/optionsSlice';
+
 export const Home = () => {
+	const dispatch = useDispatch();
+	const history = useHistory();
+
+	const handleNextStep = () => {
+		history.push('/select');
+	};
+
 	return (
 		<div className="container d-flex justify-content-center align-items-center vh-100">
 			<form>
@@ -9,23 +23,22 @@ export const Home = () => {
 					<div className="col-auto">
 						<input
 							type="number"
-							min="0"
-							max="5"
-							defaultValue="0"
+							min="1"
+							defaultValue="1"
 							className="form-control"
+							onChange={(e) => dispatch(setSeatsToChoose(e.target.value))}
 						/>
 					</div>
 				</div>
 				<div className="row mb-3">
 					<div className="col-auto">
-						<div class="form-check">
+						<div className="form-check">
 							<input
-								class="form-check-input"
+								className="form-check-input"
 								type="checkbox"
-								value=""
-								id="flexCheckDefault"
+								onChange={(e) => dispatch(setSideBySide(e.target.checked))}
 							/>
-							<label class="form-check-label" for="flexCheckDefault">
+							<label className="form-check-label">
 								Czy miejsca mają być obok siebie?
 							</label>
 						</div>
@@ -33,7 +46,11 @@ export const Home = () => {
 				</div>
 				<div className="row">
 					<div className="col d-grid">
-						<button className="btn btn-outline-primary">Wybierz miejsca</button>
+						<button
+							className="btn btn-outline-primary"
+							onClick={handleNextStep}>
+							Wybierz miejsca
+						</button>
 					</div>
 				</div>
 			</form>
