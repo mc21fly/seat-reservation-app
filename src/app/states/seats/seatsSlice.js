@@ -6,13 +6,15 @@ export const fetchSeats = createAsyncThunk('seats/fetchSeats', async () => {
 	return data;
 });
 
+const initialState = {
+	status: 'idle',
+	plan: [],
+	selected: [],
+};
+
 const seatsSlice = createSlice({
 	name: 'seats',
-	initialState: {
-		status: 'idle',
-		plan: [],
-		selected: [],
-	},
+	initialState: initialState,
 	reducers: {
 		select: (state, action) => {
 			const selected = [...current(state).selected];

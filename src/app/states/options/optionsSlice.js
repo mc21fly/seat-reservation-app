@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = {
+	seatsToChoose: 1,
+	sideBySide: false,
+};
+
 const optionsSlice = createSlice({
 	name: 'options',
-	initialState: {
-		seatsToChoose: 1,
-		sideBySide: false,
-	},
+	initialState: initialState,
 	reducers: {
 		setSeatsToChoose: (state, action) => {
 			state.seatsToChoose = action.payload;

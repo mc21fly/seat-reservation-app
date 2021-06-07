@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import './choose.scss';
 
 import { Seat } from '../../components/Seat/Seat';
-import { select, fetchSeats, clear } from '../../app/states/seats/seatsSlice';
+import { select } from '../../app/states/seats/seatsSlice';
 import { useHistory } from 'react-router-dom';
 
 export const Choose = () => {
@@ -16,23 +16,24 @@ export const Choose = () => {
 	const sideBySide = useSelector((state) => state.options.sideBySide);
 	const selectedSeats = useSelector((state) => state.seats.selected);
 
-	useEffect(() => {
-		dispatch(fetchSeats());
-	}, [dispatch]);
+	const numberOfChoosen = seatsToChoose - selectedSeats.length;
 
 	const handleRandomChoose = () => {
-		const randomIndex = () => {
-			const index = Math.floor(Math.random() * seats.length);
-
-			if (!seats[index].reserved && !selectedSeats.includes(seats[index])) {
-				return index;
-			} else return randomIndex();
-		};
-
 		if (seats.length > 0) {
-			for (let i = 0; i < seatsToChoose; i++) {
-				let randomSeat = seats[randomIndex()];
-				dispatch(select(randomSeat));
+			const seatsAvailable = seats.filter((seat) => !seat.reserved);
+
+			if (seatsToChoose <= seatsAvailable.length) {
+				const found = [];
+
+				while (found.length < seatsToChoose) {
+					const randomIndex = Math.floor(Math.random() * seatsAvailable.length);
+					const seatIndex = seatsAvailable.indexOf(seatsAvailable[randomIndex]);
+
+					found.push(seatsAvailable[randomIndex]);
+					seatsAvailable.splice(seatIndex, 1);
+				}
+
+				found.forEach((seat) => dispatch(select(seat)));
 			}
 		}
 	};
@@ -40,33 +41,29 @@ export const Choose = () => {
 	const handleSideBySideChoose = () => {
 		let found = [];
 
-		for (let i = 0; i < seats.length; i++) {
-			if (found.length < seatsToChoose - 1) {
+		seats.forEach((seat) => {
+			if (found.length < seatsToChoose) {
 				if (
-					!seats[i].reserved &&
-					found.every((seat) => seats[i + 1].cords.x === seat.cords.x)
+					!seat.reserved &&
+					found.every((_seat) => _seat.cords.x === seat.cords.x)
 				) {
-					found.push(seats[i]);
+					found.push(seat);
 				} else {
 					found = [];
-				}
-			} else if (found.length < seatsToChoose) {
-				if (
-					!seats[i].reserved &&
-					found.every((seat) => seats[i].cords.x === seat.cords.x)
-				) {
-					found.push(seats[i]);
-				} else {
-					found = [];
+					if (!seat.reserved) {
+						found.push(seat);
+					}
 				}
 			}
-		}
+		});
 
-		if (found.length < seatsToChoose) {
-			dispatch(clear());
-		} else {
-			found.map((seat) => dispatch(select(seat)));
+		if (found.length === parseInt(seatsToChoose)) {
+			found.forEach((seat) => dispatch(select(seat)));
 		}
+	};
+
+	const handleNextStep = () => {
+		history.push('/confirm');
 	};
 
 	useEffect(() => {
@@ -75,11 +72,8 @@ export const Choose = () => {
 		} else {
 			handleRandomChoose();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seats]);
-
-	const handleNextStep = () => {
-		history.push('/confirm');
-	};
 
 	return (
 		<div className="d-flex flex-column align-items-center">
@@ -95,7 +89,7 @@ export const Choose = () => {
 							<div className="legend-item available">Miejsca dostępne</div>
 						</div>
 						<div className="col">
-							<div className="legend-item navailable">Miejsca zajęte</div>
+							<div className="legend-item not-available">Miejsca zajęte</div>
 						</div>
 						<div className="col">
 							<div className="legend-item yours">Wybrane miejsca</div>
@@ -103,15 +97,11 @@ export const Choose = () => {
 						<div className="col">
 							<button
 								className="btn btn-outline-primary w-100 h-100"
-								onClick={
-									seatsToChoose - selectedSeats.length === 0
-										? handleNextStep
-										: null
-								}>
+								onClick={numberOfChoosen === 0 ? handleNextStep : null}>
 								Rezerwuj{' '}
-								<span className="badge bg-primary">
-									{seatsToChoose - selectedSeats.length}
-								</span>
+								{numberOfChoosen ? (
+									<span className="badge bg-primary">{numberOfChoosen}</span>
+								) : null}
 							</button>
 						</div>
 					</div>

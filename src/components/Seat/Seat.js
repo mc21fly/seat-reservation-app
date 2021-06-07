@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { select } from '../../app/states/seats/seatsSlice';
 import './seat.scss';

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import './app.scss';
 
 import { Home } from './views/Home/Home';
 import { Choose } from './views/Choose/Choose';

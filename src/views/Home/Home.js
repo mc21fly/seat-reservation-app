@@ -1,13 +1,24 @@
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
 	setSeatsToChoose,
 	setSideBySide,
 } from '../../app/states/options/optionsSlice';
+import { fetchSeats } from '../../app/states/seats/seatsSlice';
 
 export const Home = () => {
 	const dispatch = useDispatch();
 	const history = useHistory();
+
+	const availableSeats = useSelector((state) =>
+		state.seats.plan.filter((seat) => !seat.reserved)
+	);
+	const seatsToChoose = useSelector((state) => state.options.seatsToChoose);
+
+	useEffect(() => {
+		dispatch(fetchSeats());
+	}, [dispatch]);
 
 	const handleNextStep = () => {
 		history.push('/select');
@@ -24,6 +35,7 @@ export const Home = () => {
 						<input
 							type="number"
 							min="1"
+							max={availableSeats.length}
 							defaultValue="1"
 							className="form-control"
 							onChange={(e) => dispatch(setSeatsToChoose(e.target.value))}
@@ -48,7 +60,11 @@ export const Home = () => {
 					<div className="col d-grid">
 						<button
 							className="btn btn-outline-primary"
-							onClick={handleNextStep}>
+							onClick={
+								parseInt(seatsToChoose) <= availableSeats.length
+									? handleNextStep
+									: null
+							}>
 							Wybierz miejsca
 						</button>
 					</div>
