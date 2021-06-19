@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { select } from '../../app/states/seats/seatsSlice';
+
+import { Failure } from '../../components/Failure/Failure';
+import { Seat } from '../../components/Seat/Seat';
 
 import './choose.scss';
-
-import { Seat } from '../../components/Seat/Seat';
-import { select } from '../../app/states/seats/seatsSlice';
-import { useHistory } from 'react-router-dom';
-import { Failure } from '../../components/Failure/Failure';
 
 export const Choose = () => {
 	const dispatch = useDispatch();
@@ -17,8 +18,8 @@ export const Choose = () => {
 	const sideBySide = useSelector((state) => state.options.sideBySide);
 	const selectedSeats = useSelector((state) => state.seats.selected);
 	const isSeatsFetched = seats.length > 0;
-
 	const numberOfChoosen = seatsToChoose - selectedSeats.length;
+	const isNextStepPossible = numberOfChoosen === 0;
 
 	const handleRandomChoose = () => {
 		if (seats.length > 0) {
@@ -99,7 +100,7 @@ export const Choose = () => {
 						<div className="col">
 							<button
 								className="btn btn-outline-primary w-100 h-100"
-								onClick={numberOfChoosen === 0 ? handleNextStep : null}>
+								onClick={isNextStepPossible ? handleNextStep : null}>
 								Rezerwuj{' '}
 								{numberOfChoosen ? (
 									<span className="badge bg-primary">{numberOfChoosen}</span>

@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+
 import { Failure } from '../../components/Failure/Failure';
 
 export const Confirm = () => {
