@@ -11,13 +11,15 @@ export const Confirm = () => {
 				</div>
 				<div className="row">
 					<div className="col mb-5">
-						Wybrane miejsca:
 						<ul className="list-group">
+							<li className="list-group-item list-group-item-dark">
+								Wybrane miejsca:
+							</li>
 							{selectedSeats.map((seat, key) => (
-								<ul className="list-group-item" key={key}>
+								<li className="list-group-item" key={key}>
 									Rząd {seat.cords.x + 1}, miejsce {seat.cords.y + 1}.{' '}
 									<b>ID: {seat.id}</b>
-								</ul>
+								</li>
 							))}
 						</ul>
 					</div>
