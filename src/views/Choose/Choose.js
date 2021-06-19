@@ -6,6 +6,7 @@ import './choose.scss';
 import { Seat } from '../../components/Seat/Seat';
 import { select } from '../../app/states/seats/seatsSlice';
 import { useHistory } from 'react-router-dom';
+import { Failure } from '../../components/Failure/Failure';
 
 export const Choose = () => {
 	const dispatch = useDispatch();
@@ -15,6 +16,7 @@ export const Choose = () => {
 	const seatsToChoose = useSelector((state) => state.options.seatsToChoose);
 	const sideBySide = useSelector((state) => state.options.sideBySide);
 	const selectedSeats = useSelector((state) => state.seats.selected);
+	const isSeatsFetched = seats.length > 0;
 
 	const numberOfChoosen = seatsToChoose - selectedSeats.length;
 
@@ -75,7 +77,7 @@ export const Choose = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [seats]);
 
-	return (
+	return isSeatsFetched ? (
 		<div className="d-flex flex-column align-items-center">
 			<div className="plan mt-3">
 				{seats.map((seat, key) => (
@@ -108,5 +110,7 @@ export const Choose = () => {
 				</div>
 			</div>
 		</div>
+	) : (
+		<Failure />
 	);
 };
