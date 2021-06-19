@@ -5,7 +5,8 @@ export const Failure = () => {
 				<div className="row">
 					<div className="col mb-3 text-light">
 						<h1 className="display-1">:(</h1>
-						<p className="lead">Coś poszło nie tak</p>
+						<p className="lead fs-4">Coś poszło nie tak</p>
+
 						<a href="/" className="link-light small text-decoration-none">
 							<i className="fas fa-long-arrow-alt-left"></i> Wróć na początek
 						</a>
