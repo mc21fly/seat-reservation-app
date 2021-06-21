@@ -11,38 +11,26 @@ export const Failure = ({ code }) => {
 		});
 	};
 
-	const randomFromRange = (from, to) => {
+	const randomRange = (from, to) => {
 		return Math.floor(Math.random() * (to - from + 1) + from);
 	};
 
 	useEffect(() => {
 		const progress = async () => {
 			setPercent(
-				await valueAfterTime(randomFromRange(1, 15), randomFromRange(500, 2000))
+				await valueAfterTime(randomRange(1, 15), randomRange(500, 1500))
 			);
 			setPercent(
-				await valueAfterTime(
-					randomFromRange(16, 45),
-					randomFromRange(500, 2000)
-				)
+				await valueAfterTime(randomRange(16, 45), randomRange(500, 1500))
 			);
 			setPercent(
-				await valueAfterTime(
-					randomFromRange(46, 65),
-					randomFromRange(500, 2000)
-				)
+				await valueAfterTime(randomRange(46, 65), randomRange(500, 1500))
 			);
 			setPercent(
-				await valueAfterTime(
-					randomFromRange(66, 85),
-					randomFromRange(500, 2000)
-				)
+				await valueAfterTime(randomRange(66, 85), randomRange(500, 1500))
 			);
 			setPercent(
-				await valueAfterTime(
-					randomFromRange(86, 99),
-					randomFromRange(500, 2000)
-				)
+				await valueAfterTime(randomRange(86, 99), randomRange(500, 1500))
 			);
 			setPercent(await valueAfterTime(100, 500));
 		};
