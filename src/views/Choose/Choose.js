@@ -112,6 +112,6 @@ export const Choose = () => {
 			</div>
 		</div>
 	) : (
-		<Failure />
+		<Failure code={'SEAT FETCH ERROR'} />
 	);
 };

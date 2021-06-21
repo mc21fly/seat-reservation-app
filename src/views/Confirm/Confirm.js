@@ -38,6 +38,6 @@ export const Confirm = () => {
 			</div>
 		</div>
 	) : (
-		<Failure />
+		<Failure code={'SEAT CONFIRMATION ERROR'} />
 	);
 };
